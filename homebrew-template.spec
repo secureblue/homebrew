@@ -11,7 +11,7 @@ License:        Apache-2.0 AND BSD-2-Clause
 URL:            https://github.com/HastD/%{name}
 Source0:        %{name}-@@VERSION@@.tar.gz
 
-BuildRequires:  podman
+BuildRequires:  bubblewrap
 BuildRequires:  systemd-rpm-macros
 Requires:       gcc
 Requires:       zstd
@@ -25,12 +25,16 @@ Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
 
 %build
 mkdir ./%{name}-build
-# Install inside podman container to avoid needing root to install to /home/linuxbrew
-podman run --rm \
-    -v ./%{name}-build:/home/linuxbrew:Z \
-    -v ./install.sh:/install.sh:Z \
-    registry.fedoraproject.org/fedora:latest \
-    bash -c 'dnf install -y git && env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=/home/linuxbrew NONINTERACTIVE=1 /bin/bash /install.sh'
+# Use a bind-mount via bubblewrap to avoid needing root to install to /home/linuxbrew
+bwrap \
+    --dev-bind / / \
+    --bind ./%{name}-build /home/linuxbrew \
+    --cap-drop ALL \
+    --clearenv \
+    --setenv HOME /home/linuxbrew \
+    --setenv NONINTERACTIVE 1 \
+    --setenv PATH /usr/bin:/bin:/usr/sbin:/sbin \
+    /bin/bash ./install.sh
 
 %install
 # main brew installation
