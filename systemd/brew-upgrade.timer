@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright 2025 Universal Blue
+# SPDX-FileCopyrightText: Copyright 2025 The BlueBuild Authors
+# SPDX-FileCopyrightText: Copyright 2026 Daniel Hast
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[Unit]
+Description=Timer for upgrading Brew packages
+Wants=network-online.target
+
+[Timer]
+OnBootSec=30min
+OnUnitInactiveSec=8h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright 2025 Universal Blue
+# SPDX-FileCopyrightText: Copyright 2025 The BlueBuild Authors
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[Unit]
+Description=Auto-update Brew binary
+After=local-fs.target
+After=network-online.target
+ConditionPathIsSymbolicLink=/home/linuxbrew/.linuxbrew/bin/brew
+
+[Service]
+User=1000
+Type=oneshot
+Environment=HOMEBREW_CELLAR=/home/linuxbrew/.linuxbrew/Cellar
+Environment=HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
+Environment=HOMEBREW_REPOSITORY=/home/linuxbrew/.linuxbrew/Homebrew
+ExecStart=/usr/bin/bash -c "/home/linuxbrew/.linuxbrew/bin/brew update"
