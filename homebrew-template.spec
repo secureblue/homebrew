@@ -2,9 +2,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# The homebrew repo contains some files with invalid rpaths, but they're just
-# test files that aren't used by anything at runtime.
+# The homebrew repo contains some files with invalid rpaths, but they're just test files
+# that aren't used by anything at runtime.
 %global __brp_check_rpaths %{nil}
+
+# Skip steps that could modify the contents of the homebrew repo.
+%global __brp_add_determinism /usr/bin/true
+%global __brp_linkdupes /usr/bin/true
+%global __brp_mangle_shebangs %{nil}
+%global debug_package %{nil}
 
 Name:           homebrew
 Version:        @@VERSION@@
