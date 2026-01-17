@@ -46,7 +46,7 @@ cp -a systemd-preset/20-brew.preset %{buildroot}%{_presetdir}
 # brew shell environment and completions
 mkdir -m 755 -p %{buildroot}%{_sysconfdir}/profile.d %{buildroot}%{_datadir}/fish/vendor_conf.d
 cp -a profile.d/brew*.sh %{buildroot}%{_sysconfdir}/profile.d
-cp -a fish/brew-fish-completion.fish %{buildroot}%{_datadir}/fish/vendor_conf.d
+cp -a fish/brew-fish-completions.fish %{buildroot}%{_datadir}/fish/vendor_conf.d
 
 # systemd-tmpfiles
 mkdir -m 755 -p %{buildroot}%{_tmpfilesdir}
