@@ -10,10 +10,15 @@ Summary:        The Missing Package Manager for macOS (or Linux)
 License:        Apache-2.0 AND BSD-2-Clause
 URL:            https://github.com/HastD/%{name}
 Source0:        %{name}-@@VERSION@@.tar.gz
+Source1:        homebrew-install.sh
+Patch:          homebrew-install.patch
 
-BuildRequires:  bubblewrap
+BuildRequires:  curl >= 7.41.0
+BuildRequires:  git >= 2.7.0
 BuildRequires:  systemd-rpm-macros
+Requires:       curl >= 7.41.0
 Requires:       gcc
+Requires:       git >= 2.7.0
 Requires:       zstd
 %{?systemd_requires}
 
@@ -22,26 +27,20 @@ Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
 
 %prep
 %setup -C
+mv %{_sourcedir}/homebrew-install.sh .
+%patch
 
 %build
-mkdir ./%{name}-build
-# Use a bind-mount via bubblewrap to avoid needing root to install to /home/linuxbrew
-bwrap \
-    --dev-bind / / \
-    --bind ./%{name}-build /home/linuxbrew \
-    --cap-drop ALL \
-    --clearenv \
-    --setenv HOME /home/linuxbrew \
-    --setenv NONINTERACTIVE 1 \
-    --setenv PATH /usr/bin:/bin:/usr/sbin:/sbin \
-    /bin/bash ./install.sh
+mkdir .linuxbrew
+env -i HOME=/home/linuxbrew PATH=/usr/bin:/bin:/usr/sbin:/sbin NONINTERACTIVE=1 /bin/bash ./install.sh
 
 %install
 # main brew installation
 mkdir -m 755 -p %{buildroot}%{_datadir}/%{name}
-cp -dpR ./%{name}-build/.linuxbrew %{buildroot}%{_datadir}/%{name}
+cp -a .linuxbrew %{buildroot}%{_datadir}/%{name}
 
 # systemd units for automatic brew setup and updates
+mkdir -m 755 -p %{buildroot}%{_unitdir} %{buildroot}%{_presetdir}
 cp -a systemd/brew-*.service systemd/brew-*.timer %{buildroot}%{_unitdir}
 cp -a systemd-preset/20-brew.preset %{buildroot}%{_presetdir}
 

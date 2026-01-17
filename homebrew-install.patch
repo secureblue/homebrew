@@ -1,0 +1,45 @@
+SPDX-FileCopyrightText: Copyright 2026 Daniel Hast
+
+SPDX-License-Identifier: Apache-2.0
+
+--- homebrew-install.sh
++++ homebrew-install.sh
+@@ -182,9 +182,8 @@
+   UNAME_MACHINE="$(uname -m)"
+ 
+   # On Linux, this script installs to /home/linuxbrew/.linuxbrew only
+-  HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
++  HOMEBREW_PREFIX="${PWD}/.linuxbrew"
+   HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+-  HOMEBREW_CACHE="${HOME}/.cache/Homebrew"
+ 
+   STAT_PRINTF=("/usr/bin/stat" "-c")
+   PERMISSION_FORMAT="%a"
+@@ -826,27 +825,6 @@
+ fi
+ execute_sudo "${CHOWN[@]}" "-R" "${USER}:${GROUP}" "${HOMEBREW_REPOSITORY}"
+ 
+-if ! [[ -d "${HOMEBREW_CACHE}" ]]
+-then
+-  execute "${MKDIR[@]}" "${HOMEBREW_CACHE}"
+-fi
+-if exists_but_not_writable "${HOMEBREW_CACHE}"
+-then
+-  execute_sudo "${CHMOD[@]}" "g+rwx" "${HOMEBREW_CACHE}"
+-fi
+-if file_not_owned "${HOMEBREW_CACHE}"
+-then
+-  execute_sudo "${CHOWN[@]}" "-R" "${USER}" "${HOMEBREW_CACHE}"
+-fi
+-if file_not_grpowned "${HOMEBREW_CACHE}"
+-then
+-  execute_sudo "${CHGRP[@]}" "-R" "${GROUP}" "${HOMEBREW_CACHE}"
+-fi
+-if [[ -d "${HOMEBREW_CACHE}" ]]
+-then
+-  execute "${TOUCH[@]}" "${HOMEBREW_CACHE}/.cleaned"
+-fi
+-
+ if should_install_command_line_tools && version_ge "${macos_version}" "10.13"
+ then
+   ohai "Searching online for the Command Line Tools"
