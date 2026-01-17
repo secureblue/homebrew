@@ -6,10 +6,8 @@
 
 [Unit]
 Description=Setup Brew
-Wants=multi-user.target
-After=multi-user.target
-Wants=brew-update.service
-Before=brew-update.service
+Wants=network-online.target
+After=network-online.target
 ConditionPathExists=!/etc/.linuxbrew
 ConditionPathExists=!/home/linuxbrew/.linuxbrew
 
@@ -18,6 +16,7 @@ Type=oneshot
 ExecStart=/usr/bin/cp -R --update=none /usr/share/homebrew/.linuxbrew /home/linuxbrew
 ExecStart=/usr/bin/chown -R 1000:1000 /home/linuxbrew
 ExecStartPost=/usr/bin/touch /etc/.linuxbrew
+ExecStartPost=/usr/bin/systemctl start brew-update.service
 
 [Install]
 WantedBy=default.target multi-user.target
