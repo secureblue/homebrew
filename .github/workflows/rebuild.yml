@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: Copyright 2026 Daniel Hast
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
+name: Rebuild Copr package
+
+on:
+  schedule:
+    - cron: "00 01 * * WED" # run at 1:00 UTC every Wednesday
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  webhook:
+    name: Trigger rebuild via Copr webhook
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Ping webhook
+        shell: bash
+        env:
+          COPR_WEBHOOK: ${{ secrets.COPR_WEBHOOK }}
+        run: |
+          curl -X POST "${COPR_WEBHOOK}" > /dev/null 2>&1
