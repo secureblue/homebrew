@@ -16,15 +16,13 @@ completions for the bash and fish shells.
 
 ## Credit
 
-The install script (`install.sh`) is taken from
-[Homebrew/install](https://github.com/Homebrew/install/), and is redistributed
-under the BSD-2-Clause license.
-
-Various other files, including the systemd unit files and shell completion
-scripts, are adapted from
+Various files, including the systemd unit files and shell completion scripts,
+are adapted from
 [Universal Blue's Homebrew packaging](https://github.com/ublue-os/brew) and
 [BlueBuild's brew module](https://github.com/blue-build/modules/tree/main/modules/brew)
 and are redistributed under the terms of the Apache-2.0 license.
+
+Homebrew itself is available under the terms of the BSD-2-Clause license.
 
 This repository complies with the
 [REUSE Specification, Version 3.3](https://reuse.software/spec-3.3/); copyright
