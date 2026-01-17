@@ -36,7 +36,7 @@ Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
 
 %prep
 %setup -C
-mv %{_sourcedir}/%{name}-install.sh .
+mv %{SOURCE1} .
 patch -p0 < %{name}-install.patch
 
 %build
