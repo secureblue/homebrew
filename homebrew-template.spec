@@ -35,7 +35,7 @@ Requires:       zstd
 
 # Filter out unwanted automatic dependencies. For documentation, see:
 # https://docs.fedoraproject.org/en-US/packaging-guidelines/AutoProvidesAndRequiresFiltering/
-%global __requires_exclude ^/usr/bin/swift$|^libc\\.so\\.6\\(GLIBC_[[:digit:].]+\\)
+%global __requires_exclude_from ^%{_datadir}/homebrew/.linuxbrew/Homebrew/((.*/)?\\..*|.*\\.swift|Library/Homebrew/test(_bot)?/.*)$
 
 %description
 Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
