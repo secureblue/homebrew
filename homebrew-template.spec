@@ -33,6 +33,10 @@ Requires:       git >= 2.7.0
 Requires:       zstd
 %{?systemd_requires}
 
+# Filter out unwanted automatic dependencies. For documentation, see:
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/AutoProvidesAndRequiresFiltering/
+%global __requires_exclude ^/usr/bin/swift$|^libc\\.so\\.6\\(GLIBC_[[:digit:].]+\\)
+
 %description
 Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
 
