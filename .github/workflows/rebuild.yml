@@ -18,7 +18,7 @@ concurrency:
 jobs:
   webhook:
     name: Trigger rebuild via Copr webhook
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
       - name: Ping webhook
         shell: bash

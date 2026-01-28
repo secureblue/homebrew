@@ -19,19 +19,12 @@ concurrency:
 jobs:
   reuse:
     name: REUSE spec compliance
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
-      - name: Optimize build times
-        shell: bash
-        run: |
-          echo 'set man-db/auto-update false' | sudo debconf-communicate
-          sudo dpkg-reconfigure man-db
-          sudo rm -f /var/lib/man-db/auto-update
-          sudo sed -i 's/^update_initramfs=.*/update_initramfs=no/' /etc/initramfs-tools/update-initramfs.conf
-
       - name: Install dependencies
         shell: bash
         run: |
+          sudo apt update
           sudo apt install reuse
 
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -69,19 +62,12 @@ jobs:
 
   shellcheck:
     name: Run ShellCheck on shell scripts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
-      - name: Optimize build times
-        shell: bash
-        run: |
-          echo 'set man-db/auto-update false' | sudo debconf-communicate
-          sudo dpkg-reconfigure man-db
-          sudo rm -f /var/lib/man-db/auto-update
-          sudo sed -i 's/^update_initramfs=.*/update_initramfs=no/' /etc/initramfs-tools/update-initramfs.conf
-
       - name: Install dependencies
         shell: bash
         run: |
+          sudo apt update
           sudo apt install shellcheck
 
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
