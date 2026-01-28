@@ -43,7 +43,27 @@ SPDX-License-Identifier: Apache-2.0
  if should_install_command_line_tools && version_ge "${macos_version}" "10.13"
  then
    ohai "Searching online for the Command Line Tools"
-@@ -1029,8 +1007,6 @@
+@@ -956,7 +934,8 @@
+   execute "${USABLE_GIT}" "-c" "init.defaultBranch=main" "init" "--quiet"
+ 
+   # "git remote add" will fail if the remote is defined in the global config
+-  execute "${USABLE_GIT}" "config" "remote.origin.url" "${HOMEBREW_BREW_GIT_REMOTE}"
++  # Patch: Temporarily set the remote to local repository
++  execute "${USABLE_GIT}" "config" "remote.origin.url" "${HOMEBREW_BREW_LOCAL_GIT_REMOTE}"
+   execute "${USABLE_GIT}" "config" "remote.origin.fetch" "+refs/heads/*:refs/remotes/origin/*"
+   execute "${USABLE_GIT}" "config" "--bool" "fetch.prune" "true"
+ 
+@@ -977,6 +956,9 @@
+ 
+   execute "${USABLE_GIT}" "remote" "set-head" "origin" "--auto" >/dev/null
+ 
++  # Patch: Set the remote to what it should be post-install
++  execute "${USABLE_GIT}" "config" "remote.origin.url" "${HOMEBREW_BREW_GIT_REMOTE}"
++
+   LATEST_GIT_TAG="$("${USABLE_GIT}" -c "column.ui=never" tag --list --sort="-version:refname" | head -n1)"
+   if [[ -z "${LATEST_GIT_TAG}" ]]
+   then
+@@ -1029,8 +1011,6 @@
      PATH_WARN=1
    fi
  

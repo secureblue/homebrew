@@ -12,7 +12,7 @@
 %global __brp_mangle_shebangs %{nil}
 %global debug_package %{nil}
 
-%define homebrew_installer_commit 1fbd624ba0419f40056a60df219617d05ee67e55
+%define homebrew_installer_commit 90fa3d5881cedc0d60c4a3cc5babdb867ef42e5a
 %define build_timestamp %(date -u '+%%y%%m%%d%%H')
 
 Name:           homebrew
@@ -24,6 +24,7 @@ License:        Apache-2.0 AND BSD-2-Clause
 URL:            https://github.com/secureblue/homebrew
 Source0:        homebrew-@@VERSION@@.tar.gz
 Source1:        homebrew-install.sh
+Source2:        homebrew-brew-git.tar.gz
 
 BuildRequires:  curl >= 7.41.0
 BuildRequires:  git-core >= 2.7.0
@@ -43,12 +44,14 @@ Homebrew installs the stuff you need that Apple (or your Linux system) didn't.
 
 %prep
 %setup -C
-mv %{SOURCE1} .
+cp -a %{SOURCE1} .
 patch -p0 < homebrew-install.patch
+%setup -T -D -a 2
 
 %build
 mkdir .linuxbrew
-env -i HOME=/home/linuxbrew PATH=/usr/bin:/bin:/usr/sbin:/sbin NONINTERACTIVE=1 /bin/bash ./homebrew-install.sh
+env -i HOME=/home/linuxbrew PATH=/usr/bin:/bin:/usr/sbin:/sbin NONINTERACTIVE=1 \
+    HOMEBREW_BREW_LOCAL_GIT_REMOTE="${PWD}/brew.git" /bin/bash ./homebrew-install.sh
 
 %install
 # main brew installation
@@ -108,6 +111,9 @@ cp -a usr/lib/tmpfiles.d/homebrew.conf %{buildroot}%{_tmpfilesdir}
 %ghost %config(noreplace) %{_sysconfdir}/.linuxbrew
 
 %changelog
+* Wed Jan 28 2026 Daniel Hast <hast.daniel@protonmail.com>
+  - Update installer commit
+  - Make Homebrew/brew repo part of SRPM
 * Thu Jan 22 2026 Daniel Hast <hast.daniel@protonmail.com>
   - Filter out unwanted automatic dependencies
   - Require git-core instead of the full git package

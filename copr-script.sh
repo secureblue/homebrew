@@ -16,3 +16,7 @@ installer_commit=$(grep -oP '^%define homebrew_installer_commit \K[[:xdigit:]]+'
 curl -fLsS --retry 3 \
     -o "homebrew-${latest_tag}.tar.gz" 'https://github.com/secureblue/homebrew/tarball/main' \
     -o 'homebrew-install.sh' "https://raw.githubusercontent.com/Homebrew/install/${installer_commit}/install.sh"
+
+git clone https://github.com/Homebrew/brew.git ./brew.git
+tar -cf homebrew-brew-git.tar.gz ./brew.git
+rm -rf ./brew.git
