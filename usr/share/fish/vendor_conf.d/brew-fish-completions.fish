@@ -14,12 +14,13 @@ if status --is-interactive && not fish_is_root_user
         set --global --export HOMEBREW_CELLAR '/home/linuxbrew/.linuxbrew/Cellar'
         set --global --export HOMEBREW_REPOSITORY '/home/linuxbrew/.linuxbrew/Homebrew'
         fish_add_path --global --move --path '/home/linuxbrew/.linuxbrew/bin' '/home/linuxbrew/.linuxbrew/sbin'
-        if test -n "$MANPATH[1]"
-            set --global --export MANPATH '' $MANPATH
+        if test -n "$MANPATH"
+            set --global --export MANPATH (string replace --regex '^:*(.*?):*$' ':$1' -- "$MANPATH")
         end
-        if not contains '/home/linuxbrew/.linuxbrew/share/info' $INFOPATH
-            set --global --export INFOPATH '/home/linuxbrew/.linuxbrew/share/info' $INFOPATH
+        if not set --query INFOPATH
+            set INFOPATH ''
         end
+        set --global --export INFOPATH '/home/linuxbrew/.linuxbrew/share/info' $INFOPATH
         # End output of `brew shellenv fish`
 
         if test -d '/home/linuxbrew/.linuxbrew/share/fish/completions'
