@@ -71,7 +71,7 @@ install -Dp -m 644 -t %{buildroot}%{_sysconfdir}/profile.d etc/profile.d/brew*.s
 install -Dp -m 644 -t %{buildroot}%{_datadir}/fish/vendor_conf.d usr/share/fish/vendor_conf.d/brew-fish-completions.fish
 install -Dp -m 644 -t %{buildroot}%{_sysconfdir}/bash_completion.d etc/bash_completion.d/brew-bash-completions.sh
 install -Dp -m 755 -t %{buildroot}%{_libexecdir}/homebrew usr/libexec/homebrew/removed-command
-install -Dp -m 755 -t %{buildroot}%{_libexecdir}/homebrew/removed-commands usr/libexec/homebrew/removed-commands/*
+cp -a usr/libexec/homebrew/removed-commands %{buildroot}%{_libexecdir}/homebrew/
 
 # systemd-sysusers
 install -Dp -m 644 -t %{buildroot}%{_sysusersdir} usr/lib/sysusers.d/homebrew.conf

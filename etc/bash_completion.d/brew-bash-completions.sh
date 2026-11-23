@@ -6,10 +6,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-original_comp_load_definition="$(declare -f _comp_load)"
-renamed_comp_load_definition="$(printf '%s\n' "${original_comp_load_definition}" | sed '1s/_comp_load/bash_completion_load/')"
-eval "${renamed_comp_load_definition}"
-unset original_comp_load_definition renamed_comp_load_definition
+eval "$(declare -f _comp_load | sed '1s/_comp_load/_bash_completion_original_comp_load/')"
 
 _comp_load() {
   local command_name="${*: -1}"
@@ -29,13 +26,18 @@ _comp_load() {
       . "${completion_file}"
       return 0
     else
-      bash_completion_load "$@"
+      _bash_completion_original_comp_load "$@"
     fi
   else
-    local path_without_brew=":${PATH}"
-    path_without_brew="${path_without_brew//":${brew_bin_folder}"/}"
-    path_without_brew="${path_without_brew//":${brew_sbin_folder}"/}"
+    local brew_bin_entry=":${brew_bin_folder}:"
+    local brew_sbin_entry=":${brew_sbin_folder}:"
+    local path_without_brew=":${PATH}:"
+    while [[ "${path_without_brew}" == *"${brew_bin_entry}"* ]] || [[ "${path_without_brew}" == *"${brew_sbin_entry}"* ]]; do
+      path_without_brew="${path_without_brew//"${brew_bin_entry}"/:}"
+      path_without_brew="${path_without_brew//"${brew_sbin_entry}"/:}"
+    done
+    path_without_brew="${path_without_brew%:}"
     local PATH="${path_without_brew#:}"
-    bash_completion_load "$@"
+    _bash_completion_original_comp_load "$@"
   fi
 }
