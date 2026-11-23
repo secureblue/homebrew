@@ -69,6 +69,9 @@ install -Dp -m 644 -t %{buildroot}%{_unitdir} usr/lib/systemd/system/*
 # brew shell environment and completions
 install -Dp -m 644 -t %{buildroot}%{_sysconfdir}/profile.d etc/profile.d/brew*.sh
 install -Dp -m 644 -t %{buildroot}%{_datadir}/fish/vendor_conf.d usr/share/fish/vendor_conf.d/brew-fish-completions.fish
+install -Dp -m 644 -t %{buildroot}%{_sysconfdir}/bash_completion.d etc/bash_completion.d/brew-bash-completions.sh
+install -Dp -m 755 -t %{buildroot}%{_libexecdir}/homebrew usr/libexec/homebrew/removed-command
+cp -a usr/libexec/homebrew/removed-commands %{buildroot}%{_libexecdir}/homebrew/
 
 # systemd-sysusers
 install -Dp -m 644 -t %{buildroot}%{_sysusersdir} usr/lib/sysusers.d/homebrew.conf
@@ -102,11 +105,12 @@ install -Dp -m 644 -t %{buildroot}%{_tmpfilesdir} usr/lib/tmpfiles.d/homebrew.co
 %{_unitdir}/brew-upgrade.service
 %{_unitdir}/brew-upgrade.timer
 %{_datadir}/fish/vendor_conf.d/brew-fish-completions.fish
+%{_libexecdir}/homebrew
 %{_sysusersdir}/homebrew.conf
 %{_tmpfilesdir}/homebrew.conf
 %config(noreplace) %{_sysconfdir}/homebrew
 %config(noreplace) %{_sysconfdir}/profile.d/brew.sh
-%config(noreplace) %{_sysconfdir}/profile.d/brew-bash-completions.sh
+%config(noreplace) %{_sysconfdir}/bash_completion.d/brew-bash-completions.sh
 
 %changelog
 # Changelog entries automatically generated from upstream releases

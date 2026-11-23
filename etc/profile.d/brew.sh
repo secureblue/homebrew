@@ -13,12 +13,12 @@ if [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && [ "$(/usr/bin/id -u)" != 0 ]; t
     export HOMEBREW_PREFIX='/home/linuxbrew/.linuxbrew'
     export HOMEBREW_CELLAR='/home/linuxbrew/.linuxbrew/Cellar'
     export HOMEBREW_REPOSITORY='/home/linuxbrew/.linuxbrew/Homebrew'
-    export PATH="${PATH+"${PATH}:"}/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
+    export PATH="${PATH+"${PATH}:"}/usr/libexec/homebrew/removed-commands:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
     [ -z "${MANPATH-}" ] || {
       export MANPATH="${MANPATH%"${MANPATH##*[!:]}"}"
       export MANPATH=":${MANPATH#"${MANPATH%%[!:]*}"}"
     }
-    export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}"
+    export INFOPATH="${INFOPATH:-/usr/share/info}:/home/linuxbrew/.linuxbrew/share/info"
     # End output of `brew shellenv bash`
     ;;
   *) ;;
