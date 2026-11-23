@@ -12,7 +12,7 @@
 %global __brp_mangle_shebangs %{nil}
 %global debug_package %{nil}
 
-%define homebrew_installer_commit 90fa3d5881cedc0d60c4a3cc5babdb867ef42e5a
+%define homebrew_installer_commit 7a3f48c7e498d7df3237fd41c30f4d492857edf4
 %define build_timestamp %(date -u '+%%y%%m%%d%%H')
 
 Name:           homebrew
